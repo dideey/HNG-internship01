@@ -17,4 +17,7 @@ python3 manage.py runserver
 [Navigate to the endpoint] (http://127.0.0.1/api/api/)
 
 [The API documentation] (https://documenter.getpostman.com/view/36596982/2sAYX2PjbU)
- I
+
+##Backlink to choosen Techstack
+
+(https://hng.tech/hire/python-developers) I
