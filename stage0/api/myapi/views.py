@@ -9,5 +9,5 @@ def MyModelview(request):
         instance = MyModel.objects.first()
         serializer = MyModelSerializer(instance)
         data = serializer.data
-        data["current_datetime"] = now().isoformat() + 'N'
+        data["current_datetime"] = now().isoformat() + 'Z'
         return JsonResponse(data, safe=False, status=200)
