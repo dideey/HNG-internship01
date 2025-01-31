@@ -9,5 +9,8 @@ def MyModelview(request):
         instance = MyModel.objects.first()
         serializer = MyModelSerializer(instance)
         data = serializer.data
-        data["current_datetime"] = now().isoformat() + 'Z'
+         data = {
+            "email": "dideeyndwaru@gmail.com",
+            "current_datetime": now().isoformat(timespec='seconds').replace("+00:00", "Z")
+        }
         return JsonResponse(data, safe=False, status=200)
