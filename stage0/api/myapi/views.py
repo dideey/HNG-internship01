@@ -14,6 +14,7 @@ def my_model_view(request):
     serializer = MyModelSerializer(instance)
     data = serializer.data
 
-    current_time = timezone.now().replace(second=0, microsecond=0).strftime("%Y-%m-%dT%H:%MZ")
+    current_time = timezone.now().replace(microsecond=0).strftime("%Y-%m-%dT%H:%M:%SZ")
     data["current_datetime"] = current_time
+    
     return Response(data, status=200)
