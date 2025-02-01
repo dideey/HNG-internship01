@@ -1,4 +1,4 @@
-from django.utils.timezone import now
+from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import MyModelSerializer
@@ -6,13 +6,14 @@ from .models import MyModel
 
 @api_view(['GET'])
 def my_model_view(request):
-    instance = MyModel.objects.first()
-    
-    if instance is None:
+    try:
+        instance = MyModel.objects.latest('current_datetime')  # Use the correct field name
+    except MyModel.DoesNotExist:
         return Response({"error": "No data found"}, status=404)
     
     serializer = MyModelSerializer(instance)
     data = serializer.data
-    data["current_datetime"] = now().isoformat() + 'Z'
-    
+
+    current_time = timezone.now().replace(second=0, microsecond=0).strftime("%Y-%m-%dT%H:%MZ")
+    data["current_datetime"] = current_time
     return Response(data, status=200)
