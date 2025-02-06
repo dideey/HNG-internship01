@@ -9,6 +9,13 @@ from .math import isPrime, isPerfect, digit_sum, check_number_properties
 def classify_number(request):
     if 'number' not in request.query_params or request.query_params.get('number').isalpha():
         return JsonResponse({"number": "alphabet", "error": "true"}, status=400)
+    try:
+        number = int(request.query_params.get('number'))
+        if number < 0:
+            return JsonResponse({"error": "Number must be a positive whole number"}, status=400)
+    except ValueError:
+        return JsonResponse({"error": "Number must be a whole number"}, status=400)
+    
     number = request.query_params.get('number')
     number = int(number)
     is_prime = isPrime(number)
