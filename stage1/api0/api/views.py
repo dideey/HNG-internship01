@@ -3,11 +3,10 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 import requests
 from .math import isPrime, isPerfect, digit_sum, check_number_properties
-# Create your views here.
 
 @api_view(['GET'])
 def classify_number(request):
-   # Validate that 'number' exists in query params
+    # Validate that 'number' exists in query params
     number_param = request.query_params.get('number', None)
     if number_param is None or number_param == '':
         return JsonResponse({"error": "true", "number": ""}, status=400)
@@ -18,16 +17,16 @@ def classify_number(request):
     except ValueError:
         return JsonResponse({"error": "true", "number": number_param}, status=400)
     
-    number = request.query_params.get('number')
-    number = int(number)
+    # Call your number functions
     is_prime = isPrime(number)
     is_perfect = isPerfect(number)
     properties = check_number_properties(number)
     digit_sum_ = digit_sum(number)
 
-    #Fetching fun fact about the number
-    fun_fact_response = requests.get(f"http://numbersapi.com/{number}/math") # Fun fact about the number
+    # Fetch fun fact about the number
+    fun_fact_response = requests.get(f"http://numbersapi.com/{number}/math")  # Fun fact about the number
     fun_fact = fun_fact_response.text
+    
     response = {
         "number": number,
         "is_prime": is_prime,
@@ -36,4 +35,5 @@ def classify_number(request):
         "digit_sum": digit_sum_,
         "fun_fact": fun_fact
     }
+    
     return JsonResponse(response, status=200)
