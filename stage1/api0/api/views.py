@@ -7,14 +7,16 @@ from .math import isPrime, isPerfect, digit_sum, check_number_properties
 
 @api_view(['GET'])
 def classify_number(request):
-    if 'number' not in request.query_params or request.query_params.get('number').isalpha():
-        return JsonResponse({"number": "alphabet", "error": "true"}, status=400)
+   # Validate that 'number' exists in query params
+    number_param = request.query_params.get('number', None)
+    if number_param is None or number_param == '':
+        return JsonResponse({"error": "true", "number": ""}, status=400)
+
+    # Check if the number is a valid integer (positive or negative)
     try:
-        number = int(request.query_params.get('number'))
-        if number < 0:
-            return JsonResponse({"error": "Number must be a positive whole number"}, status=400)
+        number = int(number_param)
     except ValueError:
-        return JsonResponse({"error": "Number must be a whole number"}, status=400)
+        return JsonResponse({"error": "true", "number": number_param}, status=400)
     
     number = request.query_params.get('number')
     number = int(number)
